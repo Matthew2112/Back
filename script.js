@@ -1,27 +1,5 @@
-/* 
-   ================================================================
-   Подключается на обеих страницах (index.html и stories.html) в самом низу строкой:
-   <script src="script.js"></script>
 
-   Здесь пять независимых блоков (пятый — форма на stories.html):
-   0. Включаем "режим JS" (для аккуратного сворачивания блоков)
-   1. Hero — смена слов-якорей
-   2. Якоря (блок II) — раскрытие карточки по клику
-   3. История (блок III) — показ текста таймлайна по клику
-   4. Способы (блок V) — появление карточек по очереди при скролле
-   ================================================================ */
-
-
-/* ---------- 0. РЕЖИМ JS ----------
-   Добавляем класс "js" на страницу. CSS прячет сворачиваемый текст
-   только когда этот класс есть. Если JS вдруг не загрузится — весь
-   текст останется виден (ничего не сломается). */
 document.documentElement.classList.add('js');
-
-
-/* ---------- 1. HERO: смена слов-якорей ----------
-   Каждые 2.2 секунды меняем слово в правой части первого экрана.
-   Список слов — примеры того, что можно "заякорить". */
 const anchorWords = [
   'билет', 'запах духов', 'голос', 'открытка',
   'мелодия', 'модель машинки', 'засушенный цветок', 'вкус блюда'
@@ -31,11 +9,10 @@ const wordEl = document.getElementById('cycling-word');
 
 if (wordEl) {
   setInterval(function () {
-    // плавно гасим текущее слово
     wordEl.classList.add('is-fading');
-    // через 400 мс (когда слово исчезло) подставляем следующее и проявляем
+
     setTimeout(function () {
-      wordIndex = (wordIndex + 1) % anchorWords.length;  // % зацикливает список
+      wordIndex = (wordIndex + 1) % anchorWords.length;  
       wordEl.textContent = anchorWords[wordIndex];
       wordEl.classList.remove('is-fading');
     }, 400);
@@ -43,9 +20,6 @@ if (wordEl) {
 }
 
 
-/* ---------- 2. ЯКОРЯ (блок II): раскрытие карточки ----------
-   По клику на карточку переключаем класс "is-open".
-   Внутри карточки .anchor-detail раскрывается/сворачивается (это CSS). */
 const anchorCards = document.querySelectorAll('.anchor-card');
 anchorCards.forEach(function (card) {
   card.addEventListener('click', function () {
@@ -54,8 +28,6 @@ anchorCards.forEach(function (card) {
 });
 
 
-/* ---------- 3. ИСТОРИЯ (блок III): текст по клику на точку ----------
-   По клику на пункт таймлайна показываем/прячем его описание. */
 const timelineItems = document.querySelectorAll('.timeline-item');
 timelineItems.forEach(function (item) {
   item.addEventListener('click', function () {
@@ -64,10 +36,6 @@ timelineItems.forEach(function (item) {
 });
 
 
-/* ---------- 4. СПОСОБЫ (блок V): появление при скролле ----------
-   IntersectionObserver следит, когда блок попадает в видимую область.
-   Как только сетка карточек показалась — вешаем класс "reveal-on",
-   а CSS проявляет карточки по очереди (через transition-delay). */
 const methodsGrid = document.querySelector('.methods-grid');
 
 if (methodsGrid) {
@@ -75,27 +43,17 @@ if (methodsGrid) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
         entry.target.classList.add('reveal-on');
-        observer.unobserve(entry.target); // срабатывает один раз
+        observer.unobserve(entry.target); 
       }
     });
   }, {
-    threshold: 0.45   // запускаем, когда видно ~15% блока
+    threshold: 0.45   
   });
 
   observer.observe(methodsGrid);
 }
 
 
-/* ---------- 5. ФОРМА «РАССКАЖИ СВОЮ ИСТОРИЮ» (stories.html) ----------
-   Что происходит при отправке:
-   1) проверяем поля (имя, тип якоря, история, согласие);
-   2) если скрытое поле-ловушка заполнено — это бот, молча «успех»;
-   3) отправляем данные POST-запросом на адрес Google Apps Script
-      (он дописывает строку в Google Таблицу);
-   4) показываем сообщение «спасибо» или ошибку.
-
-   >>> ВСТАВЬ СЮДА АДРЕС из Apps Script (после «Развёртывания»),
-   >>> он заканчивается на /exec. Подробности — в инструкции. */
 const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwLIxQTYFOwjNMHIIJ4JLYQrehqhlpVARoKA2I0EhJGYRm4258GZ34259ksLg5gbZ1H/exec';
 
 const shareForm = document.getElementById('share-form');
@@ -106,14 +64,14 @@ if (shareForm) {
   const storyEl   = document.getElementById('f-story');
   const counterEl = document.getElementById('story-counter');
 
-  // Счётчик символов под полем «история»
+
   function updateCounter() {
     counterEl.textContent = storyEl.value.length + ' / ' + storyEl.maxLength;
   }
   storyEl.addEventListener('input', updateCounter);
   updateCounter();
 
-  // Показать / очистить текст ошибки под конкретным полем
+
   function setError(name, text) {
     const box = shareForm.querySelector('.field-error[data-for="' + name + '"]');
     if (!box) return;
@@ -122,7 +80,7 @@ if (shareForm) {
     if (field) field.classList.toggle('has-error', !!text);
   }
 
-  // Проверка полей. Возвращает true, если всё заполнено верно.
+
   function validate() {
     const f = shareForm.elements;
     let ok = true;
@@ -135,7 +93,7 @@ if (shareForm) {
     return ok;
   }
 
-  // Экран «спасибо»
+
   function showThanks() {
     shareForm.classList.add('is-sent');
     statusEl.classList.remove('is-error');
@@ -160,7 +118,7 @@ if (shareForm) {
       return;
     }
 
-    // Бот заполнил скрытое поле — делаем вид, что всё хорошо, но ничего не отправляем
+
     if (shareForm.elements.website.value) { showThanks(); return; }
 
     if (FORM_ENDPOINT.indexOf('https://') !== 0) {
@@ -176,8 +134,6 @@ if (shareForm) {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Отправляю…';
 
-    // mode:'no-cors' — Google отвечает без CORS-заголовков, поэтому ответ мы не читаем.
-    // Если сеть работает и запрос ушёл — считаем успехом.
     fetch(FORM_ENDPOINT, { method: 'POST', mode: 'no-cors', body: data })
       .then(function () { showThanks(); })
       .catch(function () {
