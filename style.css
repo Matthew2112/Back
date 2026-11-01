@@ -1,0 +1,1607 @@
+/* 
+   ================================================================
+   Этот файл подключается к index.html строкой:
+   <link rel="stylesheet" href="style.css">
+   в секции <head>.
+
+   Структура файла:
+   1. Сброс
+   2. Переменные (цвета, общие значения)
+   3. Базовое (body, контейнер, шрифты)
+   4. Каждая секция страницы по порядку
+   5. Мобильные стили в самом низу
+   ================================================================ */
+
+
+/* ---------- 1. СБРОС ----------
+   Обнуляем стандартные отступы и поля, которые браузер ставит сам.
+   * — это «все элементы». box-sizing нужен, чтобы padding и border
+   считались внутри ширины, а не добавлялись к ней. */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ---------- 2. ПЕРЕМЕННЫЕ ----------
+   :root — это самый верхний элемент страницы. Здесь хранятся
+   именованные цвета и значения. Меняешь цвет здесь — он меняется
+   по всему сайту. Использование: color: var(--burgundy); */
+:root {
+  --cream: #F0E8D8;          /* основной кремовый фон */
+  --cream-deep: #E5D8BE;     /* чуть темнее, для секций */
+  --cream-light: #F8F2E3;    /* чуть светлее, для карточек */
+  --ink: #1F1815;            /* почти-чёрный для текста */
+  --ink-soft: #3A2E26;       /* мягче, для второстепенного текста */
+  --ink-mute: #6B5A4E;       /* приглушённый, для подписей */
+  --burgundy: #7A2A20;       /* главный бордовый акцент */
+  --burgundy-deep: #5C1F18;  /* темнее, для hover-состояний */
+  --ochre: #C09858;          /* охра для декоративных деталей */
+  --ochre-deep: #9C7A3F;     /* темнее охра */
+  --rose: #C9817A;           /* пыльная роза */
+  --sage: #6B7864;           /* приглушённый шалфей */
+  --line: rgba(31, 24, 21, 0.15);          /* цвет тонких линий */
+  --line-strong: rgba(31, 24, 21, 0.35);   /* линии посильнее */
+}
+
+
+/* ---------- 3. БАЗОВОЕ ---------- */
+
+html {
+  scroll-behavior: smooth;   /* плавный скролл по якорным ссылкам */
+}
+
+body {
+  font-family: 'Manrope', system-ui, sans-serif;   /* шрифт основного текста */
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.6;          /* высота строки — комфорт чтения */
+  font-size: 17px;
+  font-weight: 400;
+  overflow-x: hidden;        /* запрещаем горизонтальный скролл */
+  -webkit-font-smoothing: antialiased;   /* сглаживание шрифта на маках */
+}
+
+/* Контейнер ограничивает ширину контента, чтобы текст не растягивался
+   на весь FullHD-экран. Центрируется через margin: 0 auto. */
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 64px;
+}
+
+/* Класс .display добавляет красивый сериф Fraunces.
+   Используется на заголовках и цифрах. */
+.display {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 400;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+
+
+/* ---------- НАВИГАЦИЯ (шапка) ----------
+   position: fixed — закрепляет шапку наверху при скролле.
+   z-index: 50 — поднимает её над другими элементами. */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 18px 0;
+  background: rgba(240, 232, 216, 0.95);     /* кремовый с прозрачностью */
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 64px;
+}
+.logo {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: -0.5px;
+}
+.logo span { color: var(--burgundy); }
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.nav-links a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--burgundy); }
+.nav-cta {
+  background: var(--ink);
+  color: var(--cream-light);
+  padding: 11px 24px;
+  border-radius: 999px;     /* большое значение = идеально круглые края */
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.nav-cta:hover { background: var(--burgundy); }
+
+
+/* ---------- HERO (первый экран) ---------- */
+.hero {
+  padding: 160px 0 80px;     /* большой отступ сверху, чтоб не подлезало под шапку */
+  position: relative;
+  overflow: hidden;
+}
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  margin-bottom: 48px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 600;
+}
+.hero-eyebrow::before {
+  content: "";
+  width: 48px;
+  height: 1px;
+  background: var(--burgundy);
+}
+/* clamp() = (минимум, желаемое, максимум) — шрифт сам подстраивается под ширину экрана */
+.hero-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(56px, 7.8vw, 128px);
+  font-weight: 300;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  margin-bottom: 64px;
+}
+.hero-title em {
+  font-weight: 600;
+  font-style: italic;
+  color: var(--burgundy);
+  position: relative;
+}
+/* Декоративная охра-линия под выделенными словами в заголовке */
+.hero-title em::after {
+  content: "";
+  position: absolute;
+  bottom: 0.08em;
+  left: 0;
+  right: 0;
+  height: 0.06em;
+  background: var(--ochre);
+  opacity: 0.45;
+}
+/* Grid с двумя колонками: левая шире (1.15), правая узкая (1) */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 80px;
+  align-items: end;
+}
+.hero-text {
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 520px;
+  margin-bottom: 40px;
+}
+.hero-text strong { color: var(--ink); font-weight: 600; }
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  background: var(--burgundy);
+  color: var(--cream-light);
+  padding: 18px 32px;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+.btn-primary:hover { background: var(--burgundy-deep); }
+.btn-text {
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 18px 16px;
+  border-bottom: 1px solid var(--line-strong);
+}
+/* Три колонки со статистикой */
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+}
+.hero-stat-num {
+  font-family: 'Fraunces', serif;
+  font-size: 42px;
+  font-weight: 300;
+  color: var(--burgundy);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.hero-stat-label {
+  font-size: 12px;
+  color: var(--ink-mute);
+  letter-spacing: 0.3px;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+/* Правая часть hero: крупный год + сменяющееся слово (JS меняет слово) */
+.hero-type {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  text-align: right;
+  min-height: 360px;
+  border-left: 1px solid var(--line);
+  padding-left: 48px;
+}
+.hero-type-year {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(72px, 9vw, 150px);
+  font-weight: 300;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--ochre);
+  margin-bottom: 32px;
+}
+.hero-type-anchor {
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+  width: 100%;
+}
+.hero-type-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+/* Само сменяющееся слово. transition делает смену плавной,
+   класс .is-fading (его вешает JS) на миг прячет слово. */
+.hero-type-word {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 500;
+  color: var(--burgundy);
+  line-height: 1;
+  transition: opacity 0.4s, transform 0.4s;
+  display: inline-block;
+}
+.hero-type-word.is-fading {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+
+/* ---------- МАНИФЕСТ (тёмный блок с цитатой) ---------- */
+.manifesto {
+  padding: 140px 0;
+  background: var(--ink);
+  color: var(--cream-light);
+  position: relative;
+  overflow: hidden;
+}
+/* Огромная римская «I» в фоне — декоративный приём.
+   ::before создаёт «фантомный элемент» перед содержимым.
+   content задаёт ему текст. */
+.manifesto::before {
+  content: "I";
+  position: absolute;
+  top: 60px;
+  right: 80px;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 240px;
+  color: var(--ochre);
+  opacity: 0.08;             /* почти прозрачная — фоновое украшение */
+  line-height: 1;
+}
+/* Маленький номер раздела сверху каждой секции */
+.section-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ochre);
+  letter-spacing: 4px;
+  display: block;
+  margin-bottom: 24px;
+  font-weight: 400;
+}
+.manifesto-quote {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(34px, 4.6vw, 72px);
+  line-height: 1.12;
+  font-weight: 300;
+  max-width: 1180px;
+  margin: 0 0 56px;
+  letter-spacing: -0.02em;
+}
+.manifesto-quote em {
+  color: var(--ochre);
+  font-style: italic;
+  font-weight: 400;
+}
+.manifesto-meta {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 48px;
+  align-items: center;
+  padding-top: 40px;
+  border-top: 1px solid rgba(192, 152, 88, 0.25);
+}
+.manifesto-attribution {
+  font-size: 12px;
+  color: var(--ochre);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.manifesto-secondary {
+  font-size: 15px;
+  color: rgba(248, 242, 227, 0.7);
+  max-width: 420px;
+  line-height: 1.55;
+}
+
+
+/* ---------- ЯКОРЯ ПАМЯТИ (4 карточки) ---------- */
+.anchors { padding: 140px 0; }
+
+/* Общий заголовок секции: слева большой заголовок, справа интро.
+   Эта же сетка используется во многих секциях. */
+.section-header {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 96px;
+  margin-bottom: 88px;
+  align-items: end;
+}
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(42px, 5.2vw, 84px);
+  font-weight: 400;
+  line-height: 0.94;
+  letter-spacing: -0.025em;
+}
+.section-title em {
+  font-style: italic;
+  color: var(--burgundy);
+  font-weight: 500;
+}
+.section-intro {
+  font-size: 18px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  max-width: 560px;
+}
+.section-intro p + p { margin-top: 16px; }   /* отступ между соседними абзацами */
+
+/* 4 равные колонки с тонкими бордюрами между ними */
+.anchors-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line-strong);
+  border-left: 1px solid var(--line-strong);
+}
+.anchor-card {
+  background: var(--cream);
+  padding: 48px 36px 48px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
+  transition: background 0.4s;
+  cursor: pointer;                 /* подсказка, что карточка кликабельна */
+}
+.anchor-card:hover { background: var(--cream-light); }
+.anchor-icon {
+  width: 56px;
+  height: 56px;
+  border: 1.5px solid var(--burgundy);
+  border-radius: 50%;        /* круг */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+  color: var(--burgundy);
+}
+/* SVG-иконка внутри кружка — фиксированный размер, чтобы всегда ровно */
+.anchor-icon svg {
+  width: 26px;
+  height: 26px;
+  display: block;
+}
+/* Значок "+" в углу — подсказка раскрытия. Поворачивается в "×" при открытии */
+.anchor-toggle {
+  position: absolute;
+  bottom: 28px;
+  right: 32px;
+  width: 22px;
+  height: 22px;
+  color: var(--ochre-deep);
+}
+.anchor-toggle::before,
+.anchor-toggle::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  transition: transform 0.3s;
+}
+.anchor-toggle::before { top: 50%; left: 0; width: 100%; height: 1.5px; transform: translateY(-50%); }
+.anchor-toggle::after  { left: 50%; top: 0; height: 100%; width: 1.5px; transform: translateX(-50%); }
+/* когда карточка открыта — вертикальная палочка прячется, "+" → "−" */
+.anchor-card.is-open .anchor-toggle::after { transform: translateX(-50%) scaleY(0); }
+.anchor-num {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ochre-deep);
+  letter-spacing: 2px;
+}
+.anchor-title {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 500;
+  margin-bottom: 0;
+  letter-spacing: -0.01em;
+}
+/* Сворачиваемая часть карточки.
+   Только в режиме JS (класс .js на странице) прячем её по умолчанию,
+   плавно раскрывая через max-height при классе .is-open. */
+.anchor-detail { padding-top: 20px; }
+.js .anchor-detail {
+  max-height: 0;
+  overflow: hidden;
+  padding-top: 0;
+  opacity: 0;
+  transition: max-height 0.45s ease, opacity 0.35s, padding-top 0.45s;
+}
+.js .anchor-card.is-open .anchor-detail {
+  max-height: 320px;
+  opacity: 1;
+  padding-top: 20px;
+}
+.anchor-text {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
+}
+.anchor-examples {
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.anchor-examples-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ochre-deep);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+.anchor-examples-list {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-style: italic;
+  line-height: 1.5;
+  font-family: 'Fraunces', serif;
+}
+
+
+/* ---------- ИСТОРИЯ ---------- */
+.history {
+  padding: 140px 0;
+  background: var(--cream-deep);
+  position: relative;
+}
+.history::before {
+  content: "III";
+  position: absolute;
+  top: 60px;
+  right: 80px;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 200px;
+  color: var(--burgundy);
+  opacity: 0.06;
+  line-height: 1;
+}
+/* Две колонки: текст шире (5fr), таймлайн уже (4fr) */
+.history-grid {
+  display: grid;
+  grid-template-columns: 5fr 4fr;
+  gap: 96px;
+  align-items: start;
+}
+.history-paragraph {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
+}
+.history-paragraph strong { color: var(--ink); font-weight: 600; }
+.history-pullquote {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 30px;
+  line-height: 1.3;
+  color: var(--burgundy);
+  padding: 0 0 0 36px;
+  border-left: 2px solid var(--ochre);
+  margin: 48px 0;
+  font-weight: 400;
+}
+.history-pullquote-cite {
+  display: block;
+  margin-top: 20px;
+  font-style: normal;
+  font-family: 'Manrope', sans-serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 600;
+}
+/* Таймлайн с точками и вертикальной линией слева */
+.history-timeline {
+  position: relative;
+  padding-left: 40px;
+  border-left: 1px solid var(--ochre);
+}
+.timeline-item {
+  margin-bottom: 48px;
+  position: relative;
+  cursor: pointer;                 /* подсказка кликабельности */
+}
+/* Кружочек слева у каждого пункта таймлайна */
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -46px;
+  top: 6px;
+  width: 11px;
+  height: 11px;
+  background: var(--cream-deep);   /* пустой кружок, пока пункт закрыт */
+  border: 1.5px solid var(--ochre);
+  border-radius: 50%;
+  transition: background 0.3s, transform 0.3s;
+}
+/* открытый пункт — кружок заливается */
+.timeline-item.is-open::before {
+  background: var(--burgundy);
+  border-color: var(--burgundy);
+  transform: scale(1.2);
+}
+.timeline-item:last-child { margin-bottom: 0; }
+.timeline-year {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  color: var(--burgundy);
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.timeline-title {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  line-height: 1.25;
+}
+.timeline-text {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+/* В режиме JS прячем текст, раскрываем по клику (класс .is-open) */
+.js .timeline-text {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.3s;
+}
+.js .timeline-item.is-open .timeline-text {
+  max-height: 200px;
+  opacity: 1;
+}
+/* Маленькая подсказка "+ развернуть" под заголовком, только в режиме JS */
+.timeline-title::after {
+  content: "";
+}
+.js .timeline-title::after {
+  content: " +";
+  color: var(--ochre-deep);
+  font-family: 'Manrope', sans-serif;
+  font-size: 16px;
+}
+.js .timeline-item.is-open .timeline-title::after { content: " −"; }
+
+
+/* ---------- СРАВНЕНИЕ (офлайн vs диджитал) ---------- */
+.comparison { padding: 140px 0; }
+.comparison-intro {
+  max-width: 760px;
+  font-size: 18px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  margin: 24px 0 80px;
+}
+/* Каждая строка сравнения: номер | левая колонка | "vs" | правая | победитель */
+.comparison-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 80px 1fr 110px;
+  gap: 32px;
+  padding: 40px 0;
+  border-top: 1px solid var(--line);
+  align-items: center;
+  transition: background 0.3s;
+}
+.comparison-row:hover { background: rgba(248, 242, 227, 0.4); }
+.comparison-row:last-child { border-bottom: 1px solid var(--line); }
+.comparison-num {
+  font-family: 'Fraunces', serif;
+  font-size: 64px;
+  font-weight: 300;
+  color: var(--ochre-deep);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.comparison-side h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  line-height: 1.25;
+}
+.comparison-side p {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+/* Цифровая сторона приглушена — визуальная подсказка кто проиграл */
+.comparison-side.digital { opacity: 0.5; }
+.comparison-side.digital h3 { color: var(--ink-soft); font-weight: 400; }
+.comparison-vs {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  color: var(--ochre);
+  font-size: 15px;
+  text-align: center;
+}
+.comparison-winner {
+  text-align: right;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  font-weight: 700;
+  line-height: 1.4;
+}
+.comparison-winner span {
+  display: block;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--burgundy);
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+
+/* ---------- СПОСОБЫ (тёмный блок) ---------- */
+.methods {
+  padding: 140px 0;
+  background: var(--ink);
+  color: var(--cream-light);
+  position: relative;
+  overflow: hidden;
+}
+.methods::before {
+  content: "V";
+  position: absolute;
+  top: 80px;
+  right: 80px;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 200px;
+  color: var(--ochre);
+  opacity: 0.06;
+  line-height: 1;
+}
+/* На тёмном фоне меняем цвет заголовка и подзаголовка */
+.methods .section-title { color: var(--cream-light); }
+.methods .section-title em { color: var(--ochre); }
+.methods .section-intro { color: rgba(248, 242, 227, 0.7); }
+.methods .section-num { color: var(--ochre); }
+.methods-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid rgba(248, 242, 227, 0.18);
+  border-left: 1px solid rgba(248, 242, 227, 0.18);
+}
+.method-card {
+  padding: 40px 32px 36px;
+  position: relative;
+  min-height: 360px;
+  border-right: 1px solid rgba(248, 242, 227, 0.18);
+  border-bottom: 1px solid rgba(248, 242, 227, 0.18);
+  transition: background 0.3s, opacity 0.6s ease, transform 0.6s ease;
+}
+.method-card:hover { background: rgba(248, 242, 227, 0.04); }
+
+/* Появление при скролле (только в режиме JS).
+   По умолчанию карточки спрятаны и сдвинуты вниз; когда JS вешает
+   класс .reveal-on на сетку — проявляются по очереди благодаря
+   разным transition-delay у nth-child. */
+.js .method-card {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.js .methods-grid.reveal-on .method-card {
+  opacity: 1;
+  transform: translateY(0);
+}
+.js .methods-grid.reveal-on .method-card:nth-child(1) { transition-delay: 0s; }
+.js .methods-grid.reveal-on .method-card:nth-child(2) { transition-delay: 0.1s; }
+.js .methods-grid.reveal-on .method-card:nth-child(3) { transition-delay: 0.2s; }
+.js .methods-grid.reveal-on .method-card:nth-child(4) { transition-delay: 0.3s; }
+.js .methods-grid.reveal-on .method-card:nth-child(5) { transition-delay: 0.4s; }
+.js .methods-grid.reveal-on .method-card:nth-child(6) { transition-delay: 0.5s; }
+.method-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 84px;
+  font-weight: 300;
+  color: var(--ochre);
+  line-height: 1;
+  margin-bottom: 20px;
+}
+.method-title {
+  font-family: 'Fraunces', serif;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  line-height: 1.25;
+}
+.method-text {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: rgba(248, 242, 227, 0.7);
+  margin-bottom: 24px;
+}
+.method-tools {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--ochre);
+  text-transform: uppercase;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+
+/* ---------- ИСТОРИИ (блок VI — две героини) ---------- */
+.stories {
+  padding: 140px 0;
+  background: var(--cream-deep);
+  position: relative;
+}
+.stories::before {
+  content: "VI";
+  position: absolute;
+  top: 80px;
+  right: 80px;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 200px;
+  color: var(--burgundy);
+  opacity: 0.06;
+  line-height: 1;
+}
+/* Карточка героини: фото слева (50%) + тело справа (50%) */
+.story-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 48px;
+  background: var(--cream-light);
+  border: 1px solid var(--line);
+  align-items: stretch;
+  position: relative;
+}
+.story-card:last-of-type { margin-bottom: 0; }
+
+/* Коллаж-дневник Лизы: 2 колонки, светлый фон, вертикальные развороты */
+.story-photos--journal {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.story-photos--journal img {
+  aspect-ratio: 3/4;        /* развороты блокнота сняты вертикально */
+}
+
+/* Фото-зона героя = сетка снимков. Модификатор --reverse зеркалит карточку. */
+.story-photos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 28px;
+  background: var(--cream-deep);
+  align-content: start;
+  border-right: 1px solid var(--line);
+}
+.story-card--reverse .story-photos {
+  order: 2;
+  border-right: 0;
+  border-left: 1px solid var(--line);
+}
+.story-photos img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;        /* фото заполняет ячейку без искажения */
+  display: block;
+}
+
+/* Тёмная "витрина" для моделек Матвея: чёрный фон фото сольётся с фоном */
+.story-photos--vitrine {
+  background: #0c0b09;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+  align-content: center;
+}
+.story-photos--vitrine img {
+  aspect-ratio: 4/3;        /* модельки сняты горизонтально */
+}
+/* Первый снимок (набор Batman — начало коллекции) во всю ширину витрины */
+.story-photos--vitrine .vitrine-feature {
+  grid-column: span 2;
+}
+
+
+.story-body {
+  padding: 56px 56px 60px;
+  display: flex;
+  flex-direction: column;
+}
+.story-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+  gap: 24px;
+}
+.story-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 72px;
+  font-weight: 300;
+  color: var(--ochre-deep);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+}
+.story-meta-top {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 8px;
+}
+.story-tag {
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  font-weight: 700;
+}
+.story-since {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-mute);
+}
+.story-name {
+  font-family: 'Fraunces', serif;
+  font-size: 60px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  letter-spacing: -0.025em;
+  line-height: 0.96;
+}
+.story-name--placeholder {
+  color: var(--ink-mute);
+  font-style: italic;
+  font-weight: 400;
+}
+.story-subtitle {
+  font-size: 13px;
+  color: var(--ink-mute);
+  margin-bottom: 36px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.story-quote {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 23px;
+  line-height: 1.35;
+  color: var(--burgundy);
+  padding: 0 0 0 28px;
+  border-left: 2px solid var(--ochre);
+  margin-bottom: 36px;
+  font-weight: 400;
+}
+.story-quote em { color: var(--ink); font-weight: 500; }
+.story-text {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--ink-soft);
+}
+.story-text p { margin-bottom: 16px; }
+.story-text p:last-child { margin-bottom: 0; }
+.story-text strong { color: var(--ink); font-weight: 600; }
+/* Три цифры внизу карточки: годы / страны / города */
+.story-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+.story-stat-num {
+  font-family: 'Fraunces', serif;
+  font-size: 48px;
+  font-weight: 300;
+  color: var(--burgundy);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.story-stat-label {
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 8px;
+  font-weight: 600;
+}
+.story-stat-num--placeholder { color: var(--ink-mute); opacity: 0.5; }
+
+
+/* ---------- ИЗ КУЛЬТУРЫ (бордовый блок с Прустом) ---------- */
+.culture {
+  padding: 140px 0;
+  background: var(--burgundy);
+  color: var(--cream-light);
+  position: relative;
+  overflow: hidden;
+}
+.culture::before {
+  content: "VII";
+  position: absolute;
+  top: 80px;
+  left: 80px;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 200px;
+  color: var(--ochre);
+  opacity: 0.1;
+  line-height: 1;
+}
+.culture-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 96px;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+/* Две стопки кадров «Рататуя», одна над другой */
+.culture-images {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.culture-still {
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(192, 152, 88, 0.3);
+}
+.culture-still img {
+  width: 100%;
+  display: block;
+}
+.culture-still figcaption {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ochre);
+  padding: 12px 16px;
+  background: var(--burgundy-deep);
+  letter-spacing: 0.3px;
+}
+.culture-eyebrow {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--ochre);
+  margin-bottom: 32px;
+  font-weight: 600;
+}
+.culture-quote {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: clamp(28px, 3.4vw, 46px);
+  line-height: 1.22;
+  font-weight: 300;
+  margin-bottom: 32px;
+  letter-spacing: -0.015em;
+}
+.culture-attribution {
+  font-size: 13px;
+  color: var(--ochre);
+  letter-spacing: 1.5px;
+  margin-bottom: 36px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.culture-text {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(248, 242, 227, 0.85);
+  margin-bottom: 18px;
+}
+
+
+/* ---------- ПОСЛЕСЛОВИЕ (тихий блок-закрытие) ---------- */
+.outro {
+  padding: 140px 0;
+  text-align: center;
+  background: var(--cream-deep);
+  position: relative;
+  overflow: hidden;
+}
+/* Маленькая декоративная вертикальная чёрточка сверху */
+.outro::before {
+  content: "";
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 60px;
+  background: var(--burgundy);
+}
+.outro-eyebrow {
+  font-size: 11px;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  margin: 80px 0 32px;
+  font-weight: 600;
+}
+.outro-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(48px, 6.4vw, 104px);
+  font-weight: 300;
+  line-height: 0.98;
+  margin-bottom: 28px;
+  letter-spacing: -0.03em;
+}
+.outro-title em {
+  font-style: italic;
+  color: var(--burgundy);
+  font-weight: 500;
+}
+.outro-text {
+  font-size: 18px;
+  max-width: 640px;
+  margin: 0 auto 40px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+.outro-signature {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink-mute);
+  letter-spacing: 0.5px;
+}
+
+
+/* ---------- ПОДВАЛ (footer) ---------- */
+.footer {
+  padding: 96px 0 32px;
+  background: var(--ink);
+  color: var(--cream-light);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 64px;
+  padding-bottom: 64px;
+  border-bottom: 1px solid rgba(248, 242, 227, 0.15);
+}
+.footer-logo {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 34px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+.footer-logo span { color: var(--ochre); }
+.footer-about {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: rgba(248, 242, 227, 0.7);
+  max-width: 380px;
+  margin-bottom: 28px;
+}
+.footer-author {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.footer-author-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--burgundy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--cream-light);
+}
+.footer-author-name { font-size: 14px; font-weight: 500; }
+.footer-author-role {
+  font-size: 12px;
+  color: rgba(248, 242, 227, 0.6);
+  margin-top: 2px;
+}
+.footer-col h4 {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ochre);
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+.footer-col a {
+  display: block;
+  font-size: 14px;
+  color: var(--cream-light);
+  text-decoration: none;
+  margin-bottom: 12px;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+.footer-col a:hover { opacity: 1; }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: rgba(248, 242, 227, 0.5);
+  letter-spacing: 0.5px;
+}
+
+
+/* ================================================================
+   МОБИЛЬНЫЕ СТИЛИ
+   ================================================================
+   Срабатывают, когда экран уже 900 пикселей.
+   Все правила внутри @media применяются только на маленьких экранах.
+   ================================================================ */
+@media (max-width: 900px) {
+  body { font-size: 15px; }
+  .container { padding: 0 20px; }
+
+  /* Hero-панель меньше на мобиле */
+  .hero-type { min-height: auto; border-left: 0; padding-left: 0; align-items: flex-start; text-align: left; order: -1; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .hero-type-year { font-size: 64px; margin-bottom: 20px; }
+
+  /* Шапка */
+  .nav-inner { padding: 0 20px; }
+  .nav-links { display: none; }         /* прячем меню на мобиле */
+  .nav-cta { padding: 9px 18px; font-size: 11px; }
+  .logo { font-size: 18px; }
+
+  /* Hero */
+  .hero { padding: 110px 0 60px; }
+  .hero-eyebrow { margin-bottom: 32px; font-size: 10px; letter-spacing: 2.5px; }
+  .hero-title { font-size: 48px; letter-spacing: -0.02em; margin-bottom: 40px; }
+  /* На мобиле колонки превращаются в одну */
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .hero-text { font-size: 16px; margin-bottom: 28px; }
+  .hero-actions { gap: 8px; }
+  .btn-primary { padding: 14px 22px; font-size: 11px; width: 100%; text-align: center; }
+  .btn-text { padding: 14px 8px; font-size: 11px; width: 100%; text-align: center; }
+  .hero-stats { grid-template-columns: 1fr; gap: 20px; padding-top: 28px; }
+  .hero-stat-num { font-size: 32px; }
+
+  /* Манифест */
+  .manifesto { padding: 80px 0; }
+  .manifesto::before { font-size: 140px; top: 30px; right: 20px; }
+  .manifesto-quote { font-size: 28px; margin-bottom: 36px; }
+  .manifesto-meta { grid-template-columns: 1fr; gap: 20px; padding-top: 28px; }
+
+  /* Общие отступы для всех секций на мобиле */
+  .anchors, .history, .comparison, .methods, .stories,
+  .culture { padding: 80px 0; }
+
+  /* Заголовок секции на мобиле в одну колонку */
+  .section-header { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
+  .section-title { font-size: 38px; }
+  .section-intro { font-size: 16px; }
+
+  /* Якоря — одна колонка вместо четырёх */
+  .anchors-grid { grid-template-columns: 1fr; }
+  .anchor-card { min-height: auto; padding: 36px 24px 40px; }
+  .anchor-title { font-size: 24px; }
+
+  /* История */
+  .history::before { font-size: 120px; top: 30px; right: 20px; }
+  .history-grid { grid-template-columns: 1fr; gap: 48px; }
+  .history-pullquote { font-size: 22px; padding-left: 24px; margin: 32px 0; }
+  .history-timeline { padding-left: 28px; }
+  .timeline-item::before { left: -34px; }
+
+  /* Сравнение */
+  .comparison-intro { font-size: 16px; margin-bottom: 48px; }
+  .comparison-row { grid-template-columns: 1fr; gap: 14px; padding: 28px 0; }
+  .comparison-num { font-size: 42px; }
+  .comparison-vs { display: none; }
+  .comparison-winner { text-align: left; }
+  .comparison-winner span { font-size: 16px; }
+
+  /* Способы */
+  .methods::before { font-size: 140px; top: 40px; right: 20px; }
+  .methods-grid { grid-template-columns: 1fr; }
+  .method-card { min-height: auto; padding: 36px 24px; }
+  .method-num { font-size: 64px; }
+
+  /* Истории — карточки в одну колонку, фото сверху */
+  .stories::before { font-size: 120px; top: 30px; right: 20px; }
+  .story-card { display: flex; flex-direction: column; margin-bottom: 32px; }
+  .story-card--reverse { flex-direction: column; }
+  .story-photos {
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 16px;
+    gap: 5px;
+  }
+  .story-card--reverse .story-photos {
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    order: 0;
+  }
+  .story-body { padding: 32px 24px 36px; }
+  .story-num { font-size: 48px; }
+  .story-name { font-size: 38px; }
+  .story-subtitle { margin-bottom: 24px; }
+  .story-quote { font-size: 17px; padding-left: 18px; margin-bottom: 24px; }
+  .story-text { font-size: 14px; }
+  .story-stats { gap: 16px; padding-top: 24px; margin-top: 28px; }
+  .story-stat-num { font-size: 32px; }
+
+  /* Из культуры */
+  .culture::before { font-size: 120px; top: 30px; left: 20px; }
+  .culture-grid { grid-template-columns: 1fr; gap: 48px; }
+  .culture-quote { font-size: 24px; line-height: 1.3; }
+
+  /* Послесловие */
+  .outro { padding: 90px 0; }
+  .outro::before { height: 40px; top: 50px; }
+  .outro-eyebrow { margin-top: 48px; }
+  .outro-title { font-size: 42px; }
+  .outro-text { font-size: 16px; margin-bottom: 32px; }
+
+  /* Подвал */
+  .footer { padding: 64px 0 28px; }
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+  }
+  .footer-logo { font-size: 28px; }
+  .footer-bottom { flex-direction: column; gap: 12px; }
+}
+
+
+/* ---------- МОСТИК НА ВТОРУЮ СТРАНИЦУ (конец index.html) ---------- */
+.next-page {
+  padding: 120px 0;
+  background: var(--cream-deep);
+  text-align: center;
+}
+.next-page-eyebrow {
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  margin-bottom: 28px;
+}
+.next-page-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(36px, 5vw, 72px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+}
+.next-page-title em { color: var(--burgundy); }
+.next-page-text {
+  max-width: 560px;
+  margin: 0 auto 40px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+/* Кнопка «назад» в конце stories.html */
+.outro-back { margin-top: 40px; }
+
+@media (max-width: 900px) {
+  .next-page { padding: 80px 0; }
+}
+
+/* Кнопка-ссылка на соседнюю страницу в шапке: на десктопе есть меню, поэтому показываем только на мобиле */
+.nav-cta { display: none; }
+@media (max-width: 900px) {
+  .nav-cta { display: inline-block; }
+}
+
+
+/* ================================================================
+   ФОРМА «РАССКАЖИ СВОЮ ИСТОРИЮ» (stories.html, блок #share)
+   ================================================================ */
+.share {
+  padding: 140px 0;
+  background: var(--cream);
+  border-top: 1px solid var(--line);
+}
+.share-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 96px;
+  align-items: start;
+}
+.share-intro { position: sticky; top: 120px; }
+.share-lead {
+  margin-top: 28px;
+  max-width: 440px;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+.share-points {
+  list-style: none;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  max-width: 440px;
+}
+.share-points li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--ink-mute);
+}
+.share-points li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0.65em;
+  width: 10px; height: 1px;
+  background: var(--burgundy);
+}
+
+/* Карточка формы */
+.share-form {
+  background: var(--cream-light);
+  border: 1px solid var(--line);
+  padding: 48px;
+}
+.field { margin-bottom: 28px; border: 0; padding: 0; min-width: 0; }
+.field label,
+.field legend {
+  display: block;
+  padding: 0;
+  margin-bottom: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.req { color: var(--burgundy); }
+.opt { font-weight: 400; letter-spacing: 1px; color: var(--ink-mute); text-transform: none; }
+
+/* font-size 16px — чтобы iPhone не приближал страницу при фокусе */
+.field input[type="text"],
+.field textarea {
+  width: 100%;
+  padding: 15px 16px;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--cream);
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  transition: border-color 0.2s, background 0.2s;
+}
+.field textarea { resize: vertical; min-height: 150px; }
+.field input[type="text"]::placeholder,
+.field textarea::placeholder { color: var(--ink-mute); opacity: 0.7; }
+.field input[type="text"]:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--burgundy);
+  background: #fff;
+}
+.field.has-error input[type="text"],
+.field.has-error textarea { border-color: var(--burgundy); }
+
+/* Выбор типа якоря — «таблетки» */
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { position: relative; cursor: pointer; margin: 0 !important; }
+.chip input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  width: 100%; height: 100%;
+  cursor: pointer;
+}
+.chip span {
+  display: block;
+  padding: 11px 20px;
+  font-size: 13px;
+  letter-spacing: 0.6px;
+  text-transform: none;
+  font-weight: 500;
+  color: var(--ink-soft);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  transition: all 0.2s;
+}
+.chip:hover span { border-color: var(--burgundy); color: var(--burgundy); }
+.chip input:checked + span {
+  background: var(--burgundy);
+  border-color: var(--burgundy);
+  color: var(--cream-light);
+}
+.chip input:focus-visible + span { outline: 2px solid var(--ochre-deep); outline-offset: 2px; }
+
+.field-meta { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+.counter { margin-left: auto; font-size: 12px; color: var(--ink-mute); white-space: nowrap; }
+.field-error {
+  min-height: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--burgundy);
+}
+.field-error:not(:empty) { margin-top: 8px; }
+
+/* Согласие */
+.consent {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.consent input {
+  flex: none;
+  width: 18px; height: 18px;
+  margin-top: 2px;
+  accent-color: var(--burgundy);
+}
+.consent + .field-error { margin-bottom: 4px; }
+
+.share-submit { width: 100%; margin-top: 28px; }
+.share-submit:disabled { opacity: 0.6; cursor: wait; }
+
+.form-status { margin-top: 20px; font-size: 15px; line-height: 1.5; }
+.form-status:empty { display: none; }
+.form-status.is-error { color: var(--burgundy); }
+
+/* Экран «спасибо» после отправки */
+.share-form.is-sent .field,
+.share-form.is-sent .consent,
+.share-form.is-sent .share-submit,
+.share-form.is-sent .field-error { display: none; }
+.share-form.is-sent .form-status {
+  margin: 0;
+  padding: 24px 0;
+  text-align: center;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 26px;
+  font-weight: 300;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.thanks-sub { display: block; margin-top: 12px; font-family: 'Manrope', sans-serif; font-size: 15px; color: var(--ink-mute); }
+.thanks-again {
+  margin-top: 24px;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--burgundy);
+  padding: 0 0 2px;
+  font: inherit;
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  cursor: pointer;
+}
+
+/* Поле-ловушка для ботов: вне экрана, но не display:none (боты такое заполняют) */
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px; height: 1px;
+  overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  .share { padding: 80px 0; }
+  .share-grid { grid-template-columns: 1fr; gap: 48px; }
+  .share-intro { position: static; }
+  .share-form { padding: 28px 20px; }
+  .chip span { padding: 10px 16px; }
+  .share-form.is-sent .form-status { font-size: 22px; }
+}
